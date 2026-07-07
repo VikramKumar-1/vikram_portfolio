@@ -7,7 +7,8 @@ import GlowCard from '@/components/ui/GlowCard';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { projects } from '@/lib/constants';
 
-const glowColors = ['#00f0ff', '#a855f7', '#ff2d95', '#00f0ff'];
+type GlowCardColor = 'cyan' | 'pink' | 'purple';
+const glowColors: GlowCardColor[] = ['cyan', 'purple', 'pink', 'cyan'];
 
 const containerVariants = {
   hidden: {},
@@ -43,7 +44,7 @@ function ProjectCard({
   glowColor,
 }: {
   project: (typeof projects)[number];
-  glowColor: string;
+  glowColor: GlowCardColor;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const tiltRef = useRef<HTMLDivElement>(null);

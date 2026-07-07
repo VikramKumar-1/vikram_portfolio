@@ -5,7 +5,8 @@ import { motion, useInView } from 'framer-motion';
 import AnimatedText from '@/components/ui/AnimatedText';
 import { skills } from '@/lib/constants';
 
-const glowColors = ['#00f0ff', '#a855f7', '#ff2d95', '#00f0ff', '#a855f7'];
+type GlowCardColor = 'cyan' | 'pink' | 'purple';
+const glowColors: GlowCardColor[] = ['cyan', 'purple', 'pink', 'cyan', 'purple'];
 
 const containerVariants = {
   hidden: {},
@@ -30,7 +31,7 @@ import {
   SiDocker, SiVercel, SiGit, SiGithub, SiPostman 
 } from 'react-icons/si';
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, import('react-icons').IconType> = {
   "JavaScript (ES6+)": SiJavascript,
   "TypeScript": SiTypescript,
   "PHP": SiPhp,
@@ -55,7 +56,7 @@ const iconMap: Record<string, React.ElementType> = {
 
 import { FaTerminal, FaLaptopCode, FaServer, FaDatabase, FaRocket } from 'react-icons/fa';
 
-const categoryIconMap: Record<string, React.ElementType> = {
+const categoryIconMap: Record<string, import('react-icons').IconType> = {
   "Languages": FaTerminal,
   "Frontend": FaLaptopCode,
   "Backend": FaServer,

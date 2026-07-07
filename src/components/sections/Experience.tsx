@@ -6,7 +6,8 @@ import AnimatedText from '@/components/ui/AnimatedText';
 import GlowCard from '@/components/ui/GlowCard';
 import { experiences } from '@/lib/constants';
 
-const glowColors = ['#00f0ff', '#a855f7', '#ff2d95'];
+type GlowCardColor = 'cyan' | 'pink' | 'purple';
+const glowColors: GlowCardColor[] = ['cyan', 'purple', 'pink'];
 
 function TimelineEntry({
   experience,

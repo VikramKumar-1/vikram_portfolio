@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useInView, type Variant } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
 
 interface AnimatedTextProps {
   text: string;
@@ -10,12 +10,12 @@ interface AnimatedTextProps {
   once?: boolean;
 }
 
-const wordHidden: Variant = {
+const wordHidden = {
   opacity: 0,
   y: 24,
 };
 
-const wordVisible: Variant = {
+const wordVisible = {
   opacity: 1,
   y: 0,
 };

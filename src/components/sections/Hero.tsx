@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { socialLinks } from "@/lib/constants";
 
 // 3D Scene loads after paint
@@ -33,12 +34,13 @@ export default function Hero() {
         */}
         <div className="relative w-full h-[50vh] z-[5] brightness-110 contrast-105 drop-shadow-[0_-10px_25px_rgba(255,255,255,0.15)]">
           {[...Array(5)].map((_, i) => (
-            <img
+            <Image
               key={i}
               src="/bernie.png"
               alt="Developer and dog on Mars"
               draggable={false}
-              className="absolute inset-0 w-full h-full object-contain object-bottom"
+              fill
+              className="object-contain object-bottom"
             />
           ))}
         </div>

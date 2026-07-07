@@ -121,7 +121,7 @@ export default function Contact() {
           animate={isInView ? 'visible' : 'hidden'}
         >
           <motion.div variants={itemVariants}>
-            <GlowCard glowColor="#00f0ff">
+            <GlowCard glowColor="cyan">
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
                 {/* Name field */}
                 <div>

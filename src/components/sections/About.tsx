@@ -5,31 +5,33 @@ import { motion, useInView } from 'framer-motion';
 import AnimatedText from '@/components/ui/AnimatedText';
 import GlowCard from '@/components/ui/GlowCard';
 
-const aboutCards = [
+type GlowCardColor = 'cyan' | 'pink' | 'purple';
+
+const aboutCards: { title: string; content: string; glowColor?: GlowCardColor; colSpan: string; stats?: { label: string; value: string }[] }[] = [
   {
     title: '🧑‍💻 Who I Am',
     content:
       "I'm a passionate full-stack developer and creative technologist who thrives at the intersection of design and engineering. With a deep love for crafting immersive digital experiences, I transform complex ideas into elegant, performant applications that users love.",
-    glowColor: '#00f0ff',
+    glowColor: 'cyan',
     colSpan: 'md:col-span-2',
   },
   {
     title: '📍 Location & Availability',
     content: 'Based in India 🇮🇳\nOpen to remote & hybrid roles worldwide.\nCurrently available for freelance projects and full-time opportunities.',
-    glowColor: '#a855f7',
+    glowColor: 'purple',
     colSpan: '',
   },
   {
     title: '💡 Tech Philosophy',
     content:
       'I believe great software is invisible — it just works. I focus on performance-first architecture, accessible interfaces, and code that tells a story. Every pixel and every function should earn its place.',
-    glowColor: '#ff2d95',
+    glowColor: 'pink',
     colSpan: '',
   },
   {
     title: '📊 Fun Stats',
     content: '',
-    glowColor: '#00f0ff',
+    glowColor: 'cyan',
     colSpan: 'md:col-span-2',
     stats: [
       { label: 'Projects Completed', value: '30+' },
