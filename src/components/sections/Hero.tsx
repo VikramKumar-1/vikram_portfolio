@@ -16,17 +16,7 @@ export default function Hero() {
       id="home"
       className="relative h-screen w-full overflow-hidden bg-[#030014] select-none"
     >
-      {/* LAYER 0: Cinematic Background Text (Behind everything!) */}
-      <div className="absolute inset-0 z-[0] flex flex-col items-center justify-center pt-[10vh] pointer-events-none select-none">
-        <motion.h1 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, ease: "easeOut" }}
-          className="text-5xl md:text-7xl lg:text-8xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-white via-white/40 to-transparent leading-none drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
-        >
-          VIKRAM KUMAR
-        </motion.h1>
-      </div>
+      {/* No background text — completely clean space */}
 
       {/* LAYER 1: 3D Three.js Canvas (Earth + Stars) */}
       <div className="absolute inset-0 z-[1] pointer-events-none">
