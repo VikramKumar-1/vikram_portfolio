@@ -2,6 +2,7 @@
 
 import { useRef, useState, useCallback } from 'react';
 import { motion, useInView } from 'framer-motion';
+import Image from 'next/image';
 import AnimatedText from '@/components/ui/AnimatedText';
 import GlowCard from '@/components/ui/GlowCard';
 import MagneticButton from '@/components/ui/MagneticButton';
@@ -109,10 +110,12 @@ function ProjectCard({
               />
               
               {/* Actual Image */}
-              <img
+              <Image
                 src={project.image}
                 alt={project.title}
-                className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-700 ease-out group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover z-10 transition-transform duration-700 ease-out group-hover:scale-110 opacity-80 group-hover:opacity-100"
               />
 
               {/* Gradient overlay for text readability */}

@@ -30,6 +30,11 @@ export default function Navbar() {
       requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
 
+        // Force active section to 'home' if at the absolute top to fix observer overlap
+        if (currentScrollY < 100) {
+          setActiveSection('home');
+        }
+
         if (currentScrollY < 80) {
           setIsVisible(true);
         } else if (currentScrollY > lastScrollY.current + 5) {
