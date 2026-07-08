@@ -43,9 +43,10 @@ export default function Hero() {
       <div className="absolute inset-0 z-[5] pointer-events-none flex items-end justify-center overflow-hidden">
         
         {/* 
-          Using a single Next.js Image component with quality={100} ensures maximum sharpness.
+          Using object-cover on mobile ensures the image scales up to fill the height, 
+          making the person and dog much larger and more prominent.
         */}
-        <div className="relative w-[150%] max-w-none md:w-full h-[45vh] md:h-[50vh] z-[5] brightness-105 contrast-105">
+        <div className="relative w-full h-[55vh] md:h-[50vh] z-[5] brightness-105 contrast-105">
           <Image
             src="/bernie.png"
             alt="Developer and dog on Mars"
@@ -54,7 +55,7 @@ export default function Hero() {
             unoptimized={true}
             sizes="100vw"
             draggable={false}
-            className="object-contain object-bottom drop-shadow-[0_0_1px_rgba(0,0,0,1)]"
+            className="object-cover md:object-contain object-bottom drop-shadow-[0_0_1px_rgba(0,0,0,1)]"
           />
         </div>
 
