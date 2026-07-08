@@ -63,7 +63,7 @@ export default function GlowCard({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`group relative overflow-hidden rounded-2xl border border-cyber-glass-border bg-cyber-glass-bg backdrop-blur-xl transition-all duration-500 ${hoverBorder} ${className}`}
+      className={`group relative overflow-hidden rounded-2xl border border-cyber-glass-border bg-cyber-glass-bg backdrop-blur-md transition-all duration-500 ${hoverBorder} ${className}`}
     >
       {/* Mouse-following radial glow */}
       <div
@@ -74,18 +74,6 @@ export default function GlowCard({
             400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
             rgba(${rgb}, 0.12),
             transparent 60%
-          )`,
-        }}
-      />
-
-      {/* Outer ambient glow — visible on hover */}
-      <div
-        className="pointer-events-none absolute -inset-px -z-10 rounded-2xl opacity-0 blur-xl transition-opacity duration-500 group-hover:opacity-30"
-        style={{
-          background: `radial-gradient(
-            300px circle at 50% 50%,
-            rgba(${rgb}, 0.5),
-            transparent 70%
           )`,
         }}
       />

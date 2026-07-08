@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef, type FormEvent } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useRef, useState, type FormEvent } from 'react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import AnimatedText from '@/components/ui/AnimatedText';
 import GlowCard from '@/components/ui/GlowCard';
 import MagneticButton from '@/components/ui/MagneticButton';
@@ -9,7 +9,7 @@ import MagneticButton from '@/components/ui/MagneticButton';
 const socialLinks = [
   {
     name: 'GitHub',
-    href: 'https://github.com',
+    href: 'https://github.com/VikramKumar-1',
     icon: (
       <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -18,7 +18,7 @@ const socialLinks = [
   },
   {
     name: 'LinkedIn',
-    href: 'https://linkedin.com',
+    href: 'https://linkedin.com/in/vikram-kumar-824037301',
     icon: (
       <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
         <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
@@ -26,17 +26,8 @@ const socialLinks = [
     ),
   },
   {
-    name: 'X',
-    href: 'https://x.com',
-    icon: (
-      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-      </svg>
-    ),
-  },
-  {
     name: 'Email',
-    href: 'mailto:hello@example.com',
+    href: 'mailto:vikuraj3337@gmail.com',
     icon: (
       <svg
         className="w-6 h-6"
@@ -88,16 +79,80 @@ const inputClasses = `
 export default function Contact() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: '-100px' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showButterfly, setShowButterfly] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setStatusMessage(null);
+
+    const formData = new FormData(e.currentTarget);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+
+    if (!name || name.trim().length < 2) {
+      setStatusMessage({ type: 'error', text: 'Please enter a valid name (at least 2 characters).' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email.trim())) {
+      setStatusMessage({ type: 'error', text: 'Please enter a valid email address.' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (!message || message.trim().length < 10) {
+      setStatusMessage({ type: 'error', text: 'Message is too short (minimum 10 characters).' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    const data = {
+      access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ID || process.env.NEXT_PUBLIC_WEB3FORMS_KEY || 'YOUR_ACCESS_KEY_HERE',
+      subject: `New Contact Request from ${name} - MyPortfolio`,
+      from_name: 'MyPortfolio',
+      name: name.trim(),
+      email: email.trim(),
+      message: message.trim(),
+    };
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        setStatusMessage({ type: 'success', text: 'Message sent successfully!' });
+        setShowButterfly(true);
+        setTimeout(() => setShowButterfly(false), 4000);
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatusMessage({ type: 'error', text: 'Failed to send message. Please check your access key.' });
+      }
+    } catch (error) {
+      setStatusMessage({ type: 'error', text: 'An error occurred. Please try again later.' });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <section
       id="contact"
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       <div className="max-w-2xl mx-auto">
         <AnimatedText
@@ -111,7 +166,7 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-gray-400 text-center mb-12 max-w-lg mx-auto"
         >
-          Have a project in mind or just want to chat? Drop me a message and
+          Need a project built or looking for a developer? Drop me a message and
           I&apos;ll get back to you as soon as possible.
         </motion.p>
 
@@ -177,20 +232,28 @@ export default function Contact() {
                   />
                 </div>
 
-                {/* Submit button */}
-                <div className="pt-2">
+                {/* Status Message */}
+                {statusMessage && (
+                  <div className={`p-3 rounded-lg text-sm font-medium text-center ${statusMessage.type === 'success' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+                    {statusMessage.text}
+                  </div>
+                )}
+
+                <div className="pt-8 relative">
                   <MagneticButton>
                     <button
                       type="submit"
-                      className="
-                        w-full py-3.5 rounded-xl font-semibold text-white
-                        bg-cyber-gradient
-                        transition-shadow duration-300
-                        hover:shadow-[0_0_30px_rgba(0,240,255,0.3)]
-                        active:scale-[0.98]
-                      "
+                      disabled={isSubmitting}
+                      className={`
+                        relative w-full py-5 rounded-xl font-bold tracking-widest sm:tracking-[0.2em] uppercase 
+                        transition-all duration-500 active:scale-[0.98]
+                        ${isSubmitting 
+                          ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700' 
+                          : 'bg-cyan-500/20 border border-cyan-400 text-cyan-300 hover:bg-cyan-400 hover:text-black hover:shadow-[0_0_30px_rgba(34,211,238,0.8)]'
+                        }
+                      `}
                     >
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </button>
                   </MagneticButton>
                 </div>
@@ -228,14 +291,35 @@ export default function Contact() {
           >
             Or reach me directly at{' '}
             <a
-              href="mailto:hello@example.com"
+              href="mailto:vikuraj3337@gmail.com"
               className="text-cyber-cyan hover:underline"
             >
-              hello@example.com
+              vikuraj3337@gmail.com
             </a>
           </motion.p>
         </motion.div>
       </div>
+
+      {/* Magical Butterfly Animation on Success */}
+      <AnimatePresence>
+        {showButterfly && (
+          <motion.div
+            initial={{ opacity: 0, x: -50, y: 100, scale: 0.5, rotate: -20 }}
+            animate={{ 
+              opacity: [0, 1, 1, 0], 
+              x: [-50, 150, 300, 500], 
+              y: [100, -200, -400, -800],
+              scale: [0.5, 1.5, 2.5, 3],
+              rotate: [-20, 20, -10, 15]
+            }}
+            transition={{ duration: 3.5, ease: "easeInOut" }}
+            className="pointer-events-none fixed z-[100] text-7xl drop-shadow-[0_0_25px_rgba(0,240,255,1)]"
+            style={{ left: '40%', bottom: '20%' }}
+          >
+            🦋
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

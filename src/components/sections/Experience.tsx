@@ -68,9 +68,11 @@ function TimelineEntry({
             <p className="text-cyber-purple font-medium mb-3">
               {experience.company}
             </p>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              {experience.description}
-            </p>
+            <ul className="text-gray-400 text-sm leading-relaxed space-y-2 list-disc list-inside">
+              {experience.description.map((point, i) => (
+                <li key={i}>{point}</li>
+              ))}
+            </ul>
           </div>
         </GlowCard>
       </motion.div>
@@ -101,7 +103,7 @@ export default function Experience() {
     <section
       id="experience"
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       <div className="max-w-5xl mx-auto">
         <AnimatedText

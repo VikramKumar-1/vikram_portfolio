@@ -15,22 +15,22 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "John Doe | Full Stack Developer",
+  title: "Vikram Kumar | Full Stack Developer",
   description:
-    "A passionate developer crafting beautiful, performant, and accessible digital experiences with modern technologies.",
+    "Full Stack Developer with hands-on experience building and deploying production-ready web applications using Next.js, React, TypeScript, and Laravel.",
   keywords: [
     "developer",
     "portfolio",
     "full stack",
     "react",
     "next.js",
-    "three.js",
+    "laravel",
   ],
-  authors: [{ name: "John Doe" }],
+  authors: [{ name: "Vikram Kumar" }],
   openGraph: {
-    title: "John Doe | Full Stack Developer",
+    title: "Vikram Kumar | Full Stack Developer",
     description:
-      "A passionate developer crafting beautiful, performant, and accessible digital experiences.",
+      "Full Stack Developer with hands-on experience building and deploying production-ready web applications using Next.js, React, TypeScript, and Laravel.",
     type: "website",
   },
 };

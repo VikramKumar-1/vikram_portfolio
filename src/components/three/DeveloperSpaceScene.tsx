@@ -5,19 +5,25 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Stars, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
+import { useThree } from '@react-three/fiber';
+
 // --------------------------------------------------------
 // 3D EARTH — Small, centered, slowly spinning
 // --------------------------------------------------------
 function Earth() {
   const earthRef = useRef<THREE.Mesh>(null);
   const colorMap = useTexture('/api/earth.jpg');
+  const { viewport } = useThree();
 
   useFrame(() => {
     if (earthRef.current) earthRef.current.rotation.y += 0.003;
   });
 
+  // Calculate if mobile based on viewport width (at z=6, mobile width is around 2.8, desktop is 8.8)
+  const isMobile = viewport.width < 5;
+
   return (
-    <group position={[0, 0.9, 0]}>
+    <group position={[0, isMobile ? 0.3 : 0.9, 0]}>
       {/* Added an initial tilt to make the 3D rotation look more realistic (like Earth's actual axis) */}
       <mesh ref={earthRef} rotation={[0.4, 0, 0.2]}>
         <sphereGeometry args={[0.8, 64, 64]} />
@@ -65,7 +71,7 @@ function CameraRig() {
 export default function DeveloperSpaceScene() {
   return (
     <div className="absolute inset-0 z-0 h-full w-full pointer-events-none">
-      <Canvas camera={{ position: [0, 0.5, 6], fov: 45 }}>
+      <Canvas camera={{ position: [0, 0.5, 6], fov: 45 }} dpr={[1, 1.5]}>
         <ambientLight intensity={0.4} />
         
         {/* Main 'Sun' light hitting the Earth directly from the front-right */}

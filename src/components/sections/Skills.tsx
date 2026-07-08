@@ -28,7 +28,7 @@ import {
   SiJavascript, SiTypescript, SiPhp, SiNextdotjs, SiReact, 
   SiHtml5, SiCss, SiTailwindcss, SiLaravel, SiNodedotjs, 
   SiExpress, SiMysql, SiPrisma, SiPostgresql, SiMongodb, 
-  SiDocker, SiVercel, SiGit, SiGithub, SiPostman 
+  SiDocker, SiVercel, SiGit, SiGithub, SiPostman, SiFramer
 } from 'react-icons/si';
 
 const iconMap: Record<string, import('react-icons').IconType> = {
@@ -51,7 +51,8 @@ const iconMap: Record<string, import('react-icons').IconType> = {
   "Vercel": SiVercel,
   "Git": SiGit,
   "GitHub": SiGithub,
-  "Postman": SiPostman
+  "Postman": SiPostman,
+  "Framer Motion": SiFramer
 };
 
 import { FaTerminal, FaLaptopCode, FaServer, FaDatabase, FaRocket } from 'react-icons/fa';
@@ -84,7 +85,8 @@ const colorMap: Record<string, string> = {
   "Vercel": "#ffffff",
   "Git": "#F05032",
   "GitHub": "#ffffff",
-  "Postman": "#FF6C37"
+  "Postman": "#FF6C37",
+  "Framer Motion": "#0055FF"
 };
 
 function SkillCard3D({
@@ -160,7 +162,7 @@ function SkillCard3D({
     >
       <div
         ref={tiltRef}
-        className={`relative h-full w-full rounded-2xl border border-cyber-glass-border bg-[#0a0a0a]/80 backdrop-blur-xl transition-transform duration-300 ease-out overflow-hidden ${hoverBorder}`}
+        className={`relative h-full w-full rounded-2xl border border-cyber-glass-border bg-[#0a0a0a]/80 backdrop-blur-md transition-transform duration-300 ease-out overflow-hidden ${hoverBorder}`}
         style={{ transformStyle: 'preserve-3d', transform: 'rotateX(0deg) rotateY(0deg)' }}
       >
         {/* Mouse-following radial glow */}
@@ -260,7 +262,7 @@ export default function Skills() {
     <section
       id="skills"
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
         <AnimatedText

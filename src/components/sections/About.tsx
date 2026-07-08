@@ -5,43 +5,6 @@ import { motion, useInView } from 'framer-motion';
 import AnimatedText from '@/components/ui/AnimatedText';
 import GlowCard from '@/components/ui/GlowCard';
 
-type GlowCardColor = 'cyan' | 'pink' | 'purple';
-
-const aboutCards: { title: string; content: string; glowColor?: GlowCardColor; colSpan: string; stats?: { label: string; value: string }[] }[] = [
-  {
-    title: '🧑‍💻 Who I Am',
-    content:
-      "I'm a passionate full-stack developer and creative technologist who thrives at the intersection of design and engineering. With a deep love for crafting immersive digital experiences, I transform complex ideas into elegant, performant applications that users love.",
-    glowColor: 'cyan',
-    colSpan: 'md:col-span-2',
-  },
-  {
-    title: '📍 Location & Availability',
-    content: 'Based in India 🇮🇳\nOpen to remote & hybrid roles worldwide.\nCurrently available for freelance projects and full-time opportunities.',
-    glowColor: 'purple',
-    colSpan: '',
-  },
-  {
-    title: '💡 Tech Philosophy',
-    content:
-      'I believe great software is invisible — it just works. I focus on performance-first architecture, accessible interfaces, and code that tells a story. Every pixel and every function should earn its place.',
-    glowColor: 'pink',
-    colSpan: '',
-  },
-  {
-    title: '📊 Fun Stats',
-    content: '',
-    glowColor: 'cyan',
-    colSpan: 'md:col-span-2',
-    stats: [
-      { label: 'Projects Completed', value: '30+' },
-      { label: 'Cups of Coffee', value: '2,400+' },
-      { label: 'Lines of Code', value: '500K+' },
-      { label: 'GitHub Commits', value: '3,000+' },
-    ],
-  },
-];
-
 const containerVariants = {
   hidden: {},
   visible: {
@@ -51,18 +14,13 @@ const containerVariants = {
   },
 };
 
-const cardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 40,
-  },
+const itemVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
+    scale: 1,
+    transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] },
   },
 };
 
@@ -74,63 +32,98 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden select-none"
     >
       {/* Decorative neon line divider */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-px">
-        <div className="h-full w-full bg-cyber-gradient rounded-full" />
-        <div className="absolute inset-0 bg-cyber-gradient rounded-full blur-sm opacity-60" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 max-w-2xl h-px">
+        <div className="h-full w-full bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50 shadow-[0_0_15px_rgba(168,85,247,0.4)]" />
       </div>
 
       <div className="max-w-6xl mx-auto">
-        <AnimatedText
-          text="About Me"
-          className="text-4xl md:text-5xl font-bold text-center mb-16"
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <AnimatedText
+            text="ABOUT ME"
+            className="text-4xl md:text-5xl font-black tracking-[0.2em] mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400"
+          />
+          <p className="text-gray-400 font-mono text-sm uppercase tracking-widest">
+            Initializing Developer Profile...
+          </p>
+        </motion.div>
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-auto"
         >
-          {aboutCards.map((card, index) => (
-            <motion.div
-              key={index}
-              variants={cardVariants}
-              className={card.colSpan}
-            >
-              <GlowCard glowColor={card.glowColor}>
-                <div className="p-6 h-full">
-                  <h3 className="text-xl font-semibold text-white mb-4 font-mono">
-                    {card.title}
-                  </h3>
-
-                  {card.stats ? (
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                      {card.stats.map((stat, statIndex) => (
-                        <div
-                          key={statIndex}
-                          className="text-center p-3 rounded-xl bg-white/5 border border-cyber-glass-border"
-                        >
-                          <p className="text-2xl font-bold text-cyber-cyan font-mono">
-                            {stat.value}
-                          </p>
-                          <p className="text-sm text-gray-400 mt-1">
-                            {stat.label}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-300 leading-relaxed whitespace-pre-line">
-                      {card.content}
-                    </p>
-                  )}
+          {/* Main Bio Card */}
+          <motion.div variants={itemVariants} className="md:col-span-3 md:row-span-2">
+            <GlowCard glowColor="cyan" className="h-full">
+              <div className="p-8 md:p-10 h-full flex flex-col justify-center relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-5 -rotate-12 scale-150 pointer-events-none text-9xl">
+                  🧑‍💻
                 </div>
-              </GlowCard>
-            </motion.div>
-          ))}
+                <h3 className="text-2xl font-bold text-white mb-6 font-mono flex items-center gap-3">
+                  <span className="text-cyan-400">&gt;</span> WHO_I_AM
+                </h3>
+                <p className="text-gray-300 text-lg leading-relaxed font-sans z-10">
+                  Full Stack Developer with hands-on experience building and deploying production-ready web applications using Next.js, React, TypeScript, and Laravel. Skilled across the MERN stack, Prisma ORM, and Docker, with a strong focus on clean, scalable, MVC-based engineering.
+                </p>
+                <div className="mt-8 border-t border-white/10 pt-6">
+                  <h4 className="text-white font-semibold mb-2 font-mono text-sm flex items-center gap-2">
+                    🎓 EDUCATION
+                  </h4>
+                  <p className="text-gray-400 text-sm">
+                    Bachelor of Computer Applications (BCA)<br/>
+                    <span className="text-cyan-400/80">Sarala Birla University</span>
+                  </p>
+                </div>
+              </div>
+            </GlowCard>
+          </motion.div>
+
+          {/* Location / Status Card */}
+          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1">
+            <GlowCard glowColor="purple" className="h-full">
+              <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+                <div className="h-14 w-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4 text-2xl">
+                  📍
+                </div>
+                <h4 className="text-white font-semibold mb-2 font-mono">LOCATION</h4>
+                <p className="text-gray-400 text-sm">Based in India 🇮🇳<br/>Available Worldwide</p>
+                <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] uppercase tracking-wider font-bold font-mono">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"></span>
+                  </span>
+                  AVAILABLE
+                </div>
+              </div>
+            </GlowCard>
+          </motion.div>
+
+          {/* Philosophy Card */}
+          <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1">
+            <GlowCard glowColor="pink" className="h-full">
+              <div className="p-6 h-full flex flex-col items-center justify-center text-center">
+                <div className="h-14 w-14 rounded-full bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4 text-2xl">
+                  💡
+                </div>
+                <h4 className="text-white font-semibold mb-2 font-mono text-sm">PHILOSOPHY</h4>
+                <p className="text-gray-400 text-xs leading-relaxed">
+                  Great software is invisible — it just works. I focus on performance-first architecture and code that tells a story.
+                </p>
+              </div>
+            </GlowCard>
+          </motion.div>
+
+
+
         </motion.div>
       </div>
     </section>
