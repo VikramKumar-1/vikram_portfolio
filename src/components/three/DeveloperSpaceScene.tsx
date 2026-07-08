@@ -20,10 +20,10 @@ function Earth() {
   const isMobile = viewport.width < 5;
 
   return (
-    <group position={[0, isMobile ? 0.0 : 0.5, 0]}>
+    <group position={[0, isMobile ? 0.7 : 0.5, 0]}>
       <mesh ref={earthRef} rotation={[0.4, 0, 0.2]}>
-        {/* Increased geometry to 64x64 for a perfectly smooth, round physical boundary */}
-        <sphereGeometry args={[0.8, 64, 64]} />
+        {/* Shrank the Earth slightly on mobile to avoid overlapping with the person */}
+        <sphereGeometry args={[isMobile ? 0.7 : 0.8, 64, 64]} />
         <meshPhysicalMaterial
           map={colorMap}
           roughness={0.7}
@@ -65,14 +65,12 @@ function PanoramicGalaxy() {
 // ASTEROIDS FIELD
 // --------------------------------------------------------
 function Asteroids() {
-  const rockTexture = useTexture('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon_1024.jpg');
-
   const asteroids = useMemo(() => {
     return Array.from({ length: 30 }).map(() => ({
       position: [
         (Math.random() - 0.5) * 50,
         (Math.random() - 0.5) * 50,
-        -10 - Math.random() * 30, // Push them deep into the background
+        -15 - Math.random() * 15, // Keep Z between -15 and -30 so they never pop in and out of the far fog!
       ] as [number, number, number],
       rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number],
       scale: Math.random() * 0.4 + 0.1,
@@ -87,12 +85,10 @@ function Asteroids() {
             {/* Using Icosahedron with detail for realistic rocky shapes */}
             <icosahedronGeometry args={[1, 1]} />
             <meshStandardMaterial 
-              map={rockTexture} 
-              bumpMap={rockTexture} 
-              bumpScale={0.05} 
               roughness={1} 
               metalness={0.1} 
-              color="#bbbbcc"
+              color="#888899"
+              flatShading={true} // Creates sharp, realistic asteroid facets without needing an external image texture!
             />
           </mesh>
         </Float>
@@ -114,8 +110,9 @@ function InteractiveBackground() {
   useFrame((state) => {
     if (!bgRef.current) return;
     // Mouse parallax for the background ONLY
-    const targetX = (state.mouse.x * viewport.width) / 30; // Softened the movement so it doesn't shift away aggressively
-    const targetY = (state.mouse.y * viewport.height) / 30;
+    // Increased the movement (divided by 15 instead of 30) so the galaxy feels much more fluid and free!
+    const targetX = (state.mouse.x * viewport.width) / 15;
+    const targetY = (state.mouse.y * viewport.height) / 15;
     
     bgRef.current.position.x = THREE.MathUtils.lerp(bgRef.current.position.x, targetX, 0.05);
     bgRef.current.position.y = THREE.MathUtils.lerp(bgRef.current.position.y, targetY, 0.05);

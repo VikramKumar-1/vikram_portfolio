@@ -43,10 +43,10 @@ export default function Hero() {
       <div className="absolute inset-0 z-[5] pointer-events-none flex items-end justify-center overflow-hidden">
         
         {/* 
-          Using object-cover on mobile ensures the image scales up to fill the height, 
-          making the person and dog much larger and more prominent.
+          Restored height to 50vh on mobile so the person and dog are big and prominent, 
+          while pushing the Earth higher in the 3D scene to prevent overlapping. 
         */}
-        <div className="relative w-full h-[55vh] md:h-[50vh] z-[5] brightness-105 contrast-105">
+        <div className="relative w-full h-[50vh] md:h-[50vh] z-[5] brightness-105 contrast-105">
           <Image
             src="/bernie.png"
             alt="Developer and dog on Mars"
@@ -127,7 +127,8 @@ export default function Hero() {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 0.8 }}
-        className="absolute right-6 md:right-8 top-1/2 -translate-y-1/2 z-20 pointer-events-auto"
+        // Moved to top-right on mobile to avoid overlapping the Earth in the center
+        className="absolute right-6 md:right-8 top-24 md:top-1/2 md:-translate-y-1/2 z-20 pointer-events-auto"
       >
         <a 
           href="#contact"
