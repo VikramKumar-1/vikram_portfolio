@@ -20,7 +20,7 @@ function Earth() {
   const isMobile = viewport.width < 5;
 
   return (
-    <group position={[0, isMobile ? 0.7 : 0.5, 0]}>
+    <group position={[0, isMobile ? 0.35 : 0.5, 0]}>
       <mesh ref={earthRef} rotation={[0.4, 0, 0.2]}>
         {/* Shrank the Earth slightly on mobile to avoid overlapping with the person */}
         <sphereGeometry args={[isMobile ? 0.7 : 0.8, 64, 64]} />
@@ -41,18 +41,20 @@ function Earth() {
 // --------------------------------------------------------
 function PanoramicGalaxy() {
   const galaxyTexture = useTexture('/galaxy.jpg');
+  const { viewport } = useThree();
+  const isMobile = viewport.width < 5;
+
   return (
     <mesh position={[0, 0, 0]} rotation={[0, Math.PI, 0]}>
       {/* 
-        Centered at [0,0,0] with radius 50 puts the wall exactly 50 units deep into space.
-        Rotated 180 degrees (Math.PI) so the curved slice sits perfectly at -Z (in front of the camera).
-        This creates a flawless 120-degree IMAX-style curved backdrop!
+        On desktop, height is 60 (standard IMAX curve).
+        On mobile, height is massively increased to 200 so you never see the top/bottom edges on tall portrait screens!
       */}
-      <cylinderGeometry args={[50, 50, 60, 64, 1, true, -Math.PI / 3, (Math.PI * 2) / 3]} />
+      <cylinderGeometry args={[50, 50, isMobile ? 200 : 60, 64, 1, true, -Math.PI / 3, (Math.PI * 2) / 3]} />
       <meshBasicMaterial 
         map={galaxyTexture} 
         transparent={true} 
-        opacity={0.4} // Soft, realistic nebula glow
+        opacity={0.65} // Increased brightness so the galaxy pops out more
         blending={THREE.AdditiveBlending} // Blends the black perfectly into deep space
         fog={false} 
         side={THREE.DoubleSide}
@@ -65,7 +67,7 @@ function PanoramicGalaxy() {
 // ASTEROIDS FIELD
 // --------------------------------------------------------
 // Generate the asteroids OUTSIDE the component so they never re-render or reset when you scroll!
-const INITIAL_ASTEROIDS = Array.from({ length: 40 }).map(() => {
+const INITIAL_ASTEROIDS = Array.from({ length: 25 }).map(() => {
   // Prevent asteroids from spawning perfectly inside the Earth to avoid clipping
   let startX = (Math.random() - 0.5) * 80;
   if (startX > -4 && startX < 4) startX += (startX > 0 ? 6 : -6);
@@ -73,8 +75,8 @@ const INITIAL_ASTEROIDS = Array.from({ length: 40 }).map(() => {
   return {
     position: [
       startX,
-      (Math.random() - 0.5) * 60, // Y between -30 and 30
-      (Math.random() * 48) - 40, // Z between -40 and 8 (allows them to pass the Earth at Z=0 and Camera at Z=6)
+      (Math.random() - 0.5) * 30, // Y between -15 and 15 (concentrated in the visible screen area!)
+      (Math.random() * 48) - 40, // Z between -40 and 8
     ] as [number, number, number],
     rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number],
     // Slow, majestic RIGHT TO LEFT velocity!
@@ -88,7 +90,8 @@ const INITIAL_ASTEROIDS = Array.from({ length: 40 }).map(() => {
       (Math.random() - 0.5) * 0.01,
       (Math.random() - 0.5) * 0.01,
     ],
-    scale: Math.random() * 0.4 + 0.1,
+    // Sweet spot size: Big enough to see the beautiful moon texture, but small enough not to dwarf the Earth!
+    scale: Math.random() * 0.20 + 0.10, 
   };
 });
 
@@ -117,12 +120,12 @@ function Asteroids() {
         ast.rotation[1] += ast.spin[1];
         ast.rotation[2] += ast.spin[2];
         
-        // Infinite Wrap Bounds (if it floats out of the massive 3D box, loop it to the other side)
+        // Infinite Wrap Bounds
         if (ast.position[0] > 40) ast.position[0] = -40;
         if (ast.position[0] < -40) ast.position[0] = 40;
         
-        if (ast.position[1] > 30) ast.position[1] = -30;
-        if (ast.position[1] < -30) ast.position[1] = 30;
+        if (ast.position[1] > 15) ast.position[1] = -15;
+        if (ast.position[1] < -15) ast.position[1] = 15;
         
         // When they fly completely past the camera (Z > 8), teleport them back to the deep background (Z = -40)
         if (ast.position[2] > 8) ast.position[2] = -40;

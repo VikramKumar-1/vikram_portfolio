@@ -46,7 +46,7 @@ export default function Hero() {
           Restored height to 50vh on mobile so the person and dog are big and prominent, 
           while pushing the Earth higher in the 3D scene to prevent overlapping. 
         */}
-        <div className="relative w-full h-[50vh] md:h-[50vh] z-[5] brightness-105 contrast-105">
+        <div className="relative w-full h-[50vh] md:h-[50vh] z-[5] brightness-150 md:brightness-125 contrast-110 md:contrast-110">
           <Image
             src="/bernie.png"
             alt="Developer and dog on Mars"

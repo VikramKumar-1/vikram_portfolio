@@ -107,19 +107,26 @@ export default function About() {
             </GlowCard>
           </motion.div>
 
-          {/* Philosophy Card */}
+          {/* Resume Download Card */}
           <motion.div variants={itemVariants} className="md:col-span-1 md:row-span-1">
-            <GlowCard glowColor="pink" className="h-full">
-              <div className="p-6 h-full flex flex-col items-center justify-center text-center">
-                <div className="h-14 w-14 rounded-full bg-pink-500/10 border border-pink-500/20 flex items-center justify-center mb-4 text-2xl">
-                  💡
+            <a href="/vikram_fullstack.pdf" download="Vikram_Kumar_Resume.pdf" target="_blank" rel="noopener noreferrer" className="block h-full group">
+              <GlowCard glowColor="purple" className="h-full transition-all duration-300 group-hover:border-purple-500/30">
+                <div className="p-6 h-full flex flex-col items-center justify-center text-center relative overflow-hidden">
+                  {/* Background gradient sweep on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 via-purple-500/0 to-purple-500/0 group-hover:from-purple-500/5 group-hover:to-purple-900/10 transition-all duration-500" />
+                  
+                  <div className="relative h-14 w-14 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-4 text-purple-400 group-hover:scale-110 group-hover:bg-purple-500/20 group-hover:text-purple-300 transition-all duration-300">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                  </div>
+                  <h4 className="relative text-white font-semibold mb-1 font-mono text-sm group-hover:text-purple-300 transition-colors">RESUME</h4>
+                  <p className="relative text-gray-400 text-xs mt-1 group-hover:text-gray-300 transition-colors">
+                    Click to download
+                  </p>
                 </div>
-                <h4 className="text-white font-semibold mb-2 font-mono text-sm">PHILOSOPHY</h4>
-                <p className="text-gray-400 text-xs leading-relaxed">
-                  Great software is invisible — it just works. I focus on performance-first architecture and code that tells a story.
-                </p>
-              </div>
-            </GlowCard>
+              </GlowCard>
+            </a>
           </motion.div>
 
 
