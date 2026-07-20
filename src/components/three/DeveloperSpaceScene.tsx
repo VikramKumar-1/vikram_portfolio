@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, Suspense, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Stars, useTexture, Float } from '@react-three/drei';
+import { Stars, useTexture, Float, Html, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 
 import { useThree } from '@react-three/fiber';
@@ -192,6 +192,30 @@ function InteractiveBackground() {
 }
 
 // --------------------------------------------------------
+// PREMIUM LOADING SCREEN
+// --------------------------------------------------------
+function CanvasLoader() {
+  const { progress } = useProgress();
+  return (
+    <Html center>
+      <div className="flex flex-col items-center justify-center space-y-4 pointer-events-none">
+        {/* Outer glowing ring */}
+        <div className="relative flex h-24 w-24 items-center justify-center">
+          <div className="absolute inset-0 rounded-full border-[2px] border-cyan-500/30 border-t-cyan-400 animate-spin" />
+          <div className="absolute inset-2 rounded-full border-[2px] border-purple-500/30 border-b-purple-400 animate-[spin_2s_linear_reverse_infinite]" />
+          <span className="text-cyan-300 font-mono text-sm font-bold tracking-widest animate-pulse">
+            {progress.toFixed(0)}%
+          </span>
+        </div>
+        <div className="text-cyan-400/80 text-xs tracking-[0.3em] font-light uppercase animate-pulse">
+          Initializing Space...
+        </div>
+      </div>
+    </Html>
+  );
+}
+
+// --------------------------------------------------------
 // MAIN SCENE
 // --------------------------------------------------------
 export default function DeveloperSpaceScene() {
@@ -213,7 +237,7 @@ export default function DeveloperSpaceScene() {
 
         <fog attach="fog" args={['#030014', 10, 40]} />
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<CanvasLoader />}>
           {/* Asteroids moved OUT of InteractiveBackground so they are completely unaffected by mouse movement! */}
           <Asteroids />
           
@@ -225,3 +249,8 @@ export default function DeveloperSpaceScene() {
     </div>
   );
 }
+
+// Preload heavy textures to speed up loading without losing quality
+useTexture.preload('/api/earth.jpg');
+useTexture.preload('/galaxy.jpg');
+useTexture.preload('https://upload.wikimedia.org/wikipedia/commons/d/db/Moonmap_from_clementine_data.png');

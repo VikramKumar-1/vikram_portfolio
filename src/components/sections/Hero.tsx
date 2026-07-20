@@ -11,21 +11,6 @@ const Scene = dynamic(() => import("@/components/three/DeveloperSpaceScene"), {
   loading: () => null,
 });
 
-const playShockSound = () => {
-  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel();
-    
-    const msg = new SpeechSynthesisUtterance('Faaaaaaaaa!');
-    // Tweak pitch and rate to make it sound like a shocked human reaction
-    msg.pitch = 1.8;
-    msg.rate = 0.7;
-    msg.volume = 1;
-    
-    window.speechSynthesis.speak(msg);
-  }
-};
-
 export default function Hero() {
   return (
     <section
@@ -146,23 +131,7 @@ export default function Hero() {
 
       {/* Bottom Bar */}
       <div className="absolute bottom-5 md:bottom-6 left-5 md:left-8 right-5 md:right-8 z-20 flex items-end justify-between pointer-events-auto">
-        {/* Don't press! */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-          onClick={() => {
-            playShockSound();
-            alert("🚀 Warning: Critical system failure imminent... just kidding!");
-          }}
-          className="group flex items-center gap-2 rounded-full border border-white/20 bg-black/50 px-4 py-2 text-[13px] text-gray-300 backdrop-blur-md transition-all duration-300 hover:border-orange-400/60 hover:bg-black/70 hover:text-white"
-        >
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-yellow-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-yellow-400" />
-          </span>
-          Don&apos;t press!
-        </motion.button>
+        <div />
 
         {/* Scroll */}
         <motion.a
