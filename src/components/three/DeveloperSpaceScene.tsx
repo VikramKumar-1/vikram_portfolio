@@ -37,29 +37,37 @@ function Earth() {
 }
 
 // --------------------------------------------------------
-// HYPER-REALISTIC PANORAMIC GALAXY
+// HYPER-REALISTIC PANORAMIC GALAXY SKYBOX
 // --------------------------------------------------------
 function PanoramicGalaxy() {
   const galaxyTexture = useTexture('/galaxy.jpg');
   const { viewport } = useThree();
   const isMobile = viewport.width < 5;
 
+  useEffect(() => {
+    if (galaxyTexture) {
+      galaxyTexture.colorSpace = THREE.SRGBColorSpace;
+      galaxyTexture.needsUpdate = true;
+    }
+  }, [galaxyTexture]);
+
   return (
-    <mesh position={[0, 0, 0]} rotation={[0, Math.PI, 0]}>
+    <group position={[0, 0, 0]}>
       {/* 
-        On desktop, height is 60 (standard IMAX curve).
-        On mobile, height is massively increased to 200 so you never see the top/bottom edges on tall portrait screens!
+        Using a 360 celestial sphere skybox guarantees 100% natural, undistorted texture mapping.
+        No vertical stretching or oblong stars on mobile portrait screens!
       */}
-      <cylinderGeometry args={[50, 50, isMobile ? 200 : 60, 64, 1, true, -Math.PI / 3, (Math.PI * 2) / 3]} />
-      <meshBasicMaterial 
-        map={galaxyTexture} 
-        transparent={true} 
-        opacity={0.65} // Increased brightness so the galaxy pops out more
-        blending={THREE.AdditiveBlending} // Blends the black perfectly into deep space
-        fog={false} 
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+      <mesh rotation={[0.08, Math.PI * 1.08, 0]}>
+        <sphereGeometry args={[90, 64, 64]} />
+        <meshBasicMaterial 
+          map={galaxyTexture} 
+          side={THREE.BackSide}
+          transparent={true} 
+          opacity={isMobile ? 0.75 : 0.70}
+          depthWrite={false}
+        />
+      </mesh>
+    </group>
   );
 }
 
@@ -158,35 +166,31 @@ function Asteroids() {
 }
 
 // --------------------------------------------------------
-// INTERACTIVE BACKGROUND (Skybox, Stars, Asteroids)
+// INTERACTIVE BACKGROUND (Skybox, Stars)
 // --------------------------------------------------------
 function InteractiveBackground() {
   const bgRef = useRef<THREE.Group>(null);
   const { viewport } = useThree();
-  
-  // Load the new hyper-realistic galaxy texture!
-  const galaxyTexture = useTexture('/galaxy.jpg');
+  const isMobile = viewport.width < 5;
 
   useFrame((state) => {
     if (!bgRef.current) return;
-    // Mouse parallax for the background ONLY
-    // Increased the movement (divided by 15 instead of 30) so the galaxy feels much more fluid and free!
-    const targetX = (state.mouse.x * viewport.width) / 15;
-    const targetY = (state.mouse.y * viewport.height) / 15;
+    // Mouse / touch parallax for the background
+    const factor = isMobile ? 30 : 18;
+    const targetX = (state.mouse.x * viewport.width) / factor;
+    const targetY = (state.mouse.y * viewport.height) / factor;
     
-    bgRef.current.position.x = THREE.MathUtils.lerp(bgRef.current.position.x, targetX, 0.05);
-    bgRef.current.position.y = THREE.MathUtils.lerp(bgRef.current.position.y, targetY, 0.05);
-    
-    // Removed automatic rotation as requested — background only moves on mouse hover/movement
+    bgRef.current.position.x = THREE.MathUtils.lerp(bgRef.current.position.x, targetX, 0.04);
+    bgRef.current.position.y = THREE.MathUtils.lerp(bgRef.current.position.y, targetY, 0.04);
   });
 
   return (
     <group ref={bgRef}>
-      {/* Hyper-Realistic Curved IMAX-style Galaxy Screen */}
+      {/* Hyper-Realistic 360 Celestial Galaxy Sphere */}
       <PanoramicGalaxy />
 
-      {/* Increased factor from 1.5 to 3.0 to make stars much brighter and larger */}
-      <Stars radius={100} depth={50} count={3000} factor={1.5} saturation={0} fade speed={2} />
+      {/* Crisp Ambient Star Field */}
+      <Stars radius={100} depth={50} count={isMobile ? 2200 : 3000} factor={1.4} saturation={0} fade speed={1.5} />
     </group>
   );
 }
